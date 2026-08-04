@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SlopDetector — AI Slop Fingerprint Scanner | PraveenTechWorld</title>
+  <meta name="description" content="Free AI content detector. Scans text or any URL for the documented AI-writing fingerprint: buzzwords, em dashes, flat sentence rhythm, stock phrases, and semantic tells. Powered by PraveenTechWorld." />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%8D%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="/">Slop<span>Detector</span></a>
+      <nav>
+        <a href="#how">How it works</a>
+        <a href="#research">Research</a>
+        <a href="https://www.praveentechworld.com" target="_blank" rel="noopener">PraveenTechWorld</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>Is it a person, or is it slop?</h1>
+      <p class="sub">SlopDetector scans text for the documented AI-writing fingerprint — buzzwords, em dashes, flat rhythm, stock phrases — then runs a semantic judge over the whole piece. <strong>It measures style, not authorship.</strong> No AI content is automatically wrong; this is the pre-publish sniff test.</p>
+    </section>
+
+    <section class="card input-card">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="paste" role="tab">Paste text</button>
+        <button class="tab" data-tab="url" role="tab">Scan a URL</button>
+      </div>
+
+      <div class="tabpane active" id="pane-paste">
+        <textarea id="input-text" rows="10" placeholder="Paste an article, blog post, LinkedIn post, or any prose here... (min ~40 words for a full read)"></textarea>
+        <div class="row">
+          <div class="examples">
+            <span>Try:</span>
+            <button class="chip" data-example="slop">AI slop sample</button>
+            <button class="chip" data-example="human">human sample</button>
+          </div>
+          <button id="btn-scan" class="btn-primary">Scan for slop</button>
+        </div>
+      </div>
+
+      <div class="tabpane" id="pane-url">
+        <input id="input-url" type="url" placeholder="https://example.com/some-article" />
+        <div class="row">
+          <span class="hint">Fetches the page and extracts the article body.</span>
+          <button id="btn-scan-url" class="btn-primary">Scan URL</button>
+        </div>
+      </div>
+
+      <div id="status" class="status" hidden></div>
+    </section>
+
+    <section id="results" hidden>
+      <div class="verdict card">
+        <div class="dialwrap">
+          <div class="dial" id="dial"><span id="dial-score">–</span><small id="dial-label">score</small></div>
+        </div>
+        <div class="verdict-body">
+          <h2 id="grade">–</h2>
+          <p id="verdict-note" class="muted"></p>
+          <div class="subscores">
+            <div class="subscore"><span class="k">Fingerprint</span><b id="s-heuristic">–</b><small>heuristic</small></div>
+            <div class="subscore"><span class="k">Judge</span><b id="s-judge">–</b><small>Gemini semantic</small></div>
+            <div class="subscore"><span class="k">Combined</span><b id="s-combined">–</b><small>blended</small></div>
+          </div>
+          <div id="judge-note" class="judge-note"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Signal breakdown <span class="muted">(points of each max, 0–100 total)</span></h3>
+        <div id="signals" class="signals"></div>
+      </div>
+
+      <div class="card">
+        <h3>Matches found</h3>
+        <p class="muted small">Specific phrases and patterns, with context.</p>
+        <div id="matches" class="matches"></div>
+      </div>
+
+      <div class="card" id="judge-card" hidden>
+        <h3>Semantic judge <span class="muted">(Gemini, schema-constrained)</span></h3>
+        <div id="judge-body"></div>
+      </div>
+
+      <div class="card">
+        <h3>How to fix it</h3>
+        <div id="humanize" class="humanize"></div>
+      </div>
+    </section>
+
+    <section class="card" id="how">
+      <h3>How it works</h3>
+      <div class="cols">
+        <div>
+          <h4>1 · Deterministic fingerprint (free, instant)</h4>
+          <p>12 signals measured directly in the text: AI buzzword density, stock phrase clichés, em/en dash density, "actually" overuse, sentence-rhythm burstiness, vocabulary range, trigram repetition, rhythm runs, chat-style openers, bold-bullet formulas, and typography tells. Every point is explained with the exact phrase and context.</p>
+          <h4>2 · Semantic judge (Gemini 3.6 Flash)</h4>
+          <p>A schema-constrained Gemini call reads the whole text and scores it on semantic tells: uniform voice, no first-hand detail, hedge-stacking, empty summary closers. Judge and fingerprint are blended with the judge weighted lower when it reports low confidence.</p>
+        </div>
+        <div>
+          <h4>What the score means</h4>
+          <p>The score is <strong>ordinal, not calibrated</strong>. It ranks how much a text <em>looks like</em> unedited model output. Raw AI text scores high, human-edited AI text lands mid-range, and plain human writing scores low. False positives happen: formal, technical, or academic writing can trip rhythm and vocabulary signals.</p>
+          <h4>What it doesn't mean</h4>
+          <p>Google does not penalize AI authorship — it penalizes scaled, low-value content (spam policy, "scaled content abuse"). The real reasons to cut slop: readers and platforms are actively soured on it (LinkedIn's "AI slop" report button, YouTube's detection misfires), and AI answer engines cite specifics, not prose texture.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="research">
+      <h3>Research backing</h3>
+      <ul class="refs">
+        <li><a href="https://www.nature.com/articles/s41562-025-02273-8" rel="noopener" target="_blank">Liang et al., Nature Human Behaviour 2025</a> — "realm", "intricate", "showcasing", "pivotal" flat for a decade, then surged post-ChatGPT.</li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12219543/" rel="noopener" target="_blank">Kobak et al., Science Advances 2025</a> — excess-vocabulary in 15M abstracts; "delve" +~1500% 2022–2024.</li>
+        <li>Guo et al. 2023 — em dashes in ~73% of GPT-4 long-form samples vs ~12% of human writing.</li>
+        <li>Aletheia (julienmiquel) — burstiness CV: human &gt; 0.4, AI &lt; 0.2; LLM judge adds the semantic layer statistical counters miss.</li>
+        <li>antydizajn/ai-slop-detect, hwajongpark/slop-gate, fbuchinger/smellcheck — open-source tell packs (em-dash, openers, vocabulary).</li>
+        <li>Ahrefs 2025 (600k pages): AI-content percentage vs ranking correlation ≈ 0.011 — Google ranks value, not authorship.</li>
+        <li>Full source list: <a href="/RESEARCH.md" rel="noopener">RESEARCH.md</a></li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>SlopDetector · a PraveenTechWorld tool · <a href="https://www.praveentechworld.com" rel="noopener">praveentechworld.com</a></p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

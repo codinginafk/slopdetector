@@ -1,0 +1,102 @@
+[
+  {
+    "id": "human-lincoln-1863",
+    "category": "known_human",
+    "subcategory": "formal_oratory",
+    "ground_truth": "human",
+    "source": "Abraham Lincoln, Gettysburg Address, Nov 19 1863. Public domain. Retrieved verbatim via Project Gutenberg (gutenberg.org/ebooks/4), fetched this session.",
+    "word_count": 271,
+    "text": "Four score and seven years ago our fathers brought forth, upon this continent, a new nation, conceived in liberty, and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived, and so dedicated, can long endure. We are met on a great battle field of that war. We have come to dedicate a portion of it, as a final resting place for those who died here, that the nation might live. This we may, in all propriety do. But, in a larger sense, we can not dedicate, we can not consecrate, we can not hallow, this ground. The brave men, living and dead, who struggled here, have hallowed it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, while it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us, that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion, that we here highly resolve that these dead shall not have died in vain, that this nation, under God, shall have a new birth of freedom, and that government of the people, by the people, for the people, shall not perish from this earth.",
+    "expected_behavior": "Should score low / clean_human. Also a legitimate stress test for whether the tool flags low-confidence on short text (271 words) instead of forcing a confident verdict either way — this is right at or below most detectors' reliable floor."
+  },
+  {
+    "id": "human-twain-1884",
+    "category": "known_human",
+    "subcategory": "colloquial_dialect_narrative",
+    "ground_truth": "human",
+    "source": "Mark Twain, Adventures of Huckleberry Finn, Ch. 1. Public domain. Retrieved verbatim via Project Gutenberg (gutenberg.org/files/76/76-h/76-h.htm), fetched this session.",
+    "word_count": 146,
+    "text": "Her sister, Miss Watson, a tolerable slim old maid, with goggles on, had just come to live with her, and took a set at me now with a spelling-book. She worked me middling hard for about an hour, and then the widow made her ease up. I couldn't stood it much longer. Then for an hour it was deadly dull, and I was fidgety. Miss Watson would say, \"Don't put your feet up there, Huckleberry;\" and \"Don't scrunch up like that, Huckleberry, set up straight;\" and pretty soon she would say, \"Don't gap and stretch like that, Huckleberry, why don't you try to behave?\" Then she told me all about the bad place, and I said I wished I was there. She got mad then, but I didn't mean no harm. All I wanted was to go somewheres; all I wanted was a change, I warn't particular. She said it was wicked to say what I said; said she wouldn't say it for the whole world; she was going to live so as to go to the good place.",
+    "expected_behavior": "Should score low / clean_human. High burstiness (choppy short sentences mixed with run-ons), heavy contractions and dialect spelling — a real stress test for whether burstiness/vocabulary scoring correctly reads dialect and voice as human rather than as noise."
+  },
+  {
+    "id": "ai-fresh-itpro-raw",
+    "category": "known_ai",
+    "subcategory": "raw_unedited",
+    "ground_truth": "ai",
+    "source": "Written by Claude, this conversation, 2026-08-04. Deliberately unedited default-register output — not adapted or toned down.",
+    "word_count": 128,
+    "text": "In today's fast-paced digital landscape, network security has become more crucial than ever. It's important to note that VLAN segmentation offers a robust, invaluable approach to isolating traffic and reducing your attack surface. By leveraging VLANs, organizations can foster a more resilient infrastructure — one that not only enhances performance but also empowers IT teams to respond swiftly to emerging threats. Let's delve into why this matters. First, segmentation limits lateral movement. Second, it simplifies compliance. Third, it improves overall network visibility. Ultimately, embracing VLAN segmentation isn't just a technical upgrade — it's a strategic imperative for any organization looking to elevate its security posture in an increasingly complex threat landscape.",
+    "expected_behavior": "Should score high / likely_ai_raw with high confidence. Dense with fingerprint-layer tells (crucial, robust, invaluable, leverage, foster, delve, elevate, landscape x2, em dashes, rule-of-three list). This is the easy case — if this doesn't score high, something's wrong upstream."
+  },
+  {
+    "id": "ai-fresh-howto-listicle",
+    "category": "known_ai",
+    "subcategory": "structured_listicle",
+    "ground_truth": "ai",
+    "source": "Written by Claude, this conversation, 2026-08-04.",
+    "word_count": 112,
+    "text": "Running out of storage? Don't worry, we've got you covered! Here's everything you need to know to reclaim valuable space on your PC.\n\n1. Run Disk Cleanup: This built-in tool is a game-changer for clearing out temporary files.\n2. Uninstall unused apps: Take a look at your installed programs and remove anything you no longer need.\n3. Leverage Storage Sense: Windows' automated cleanup feature works tirelessly in the background.\n4. Clear your Downloads folder: It's often an overlooked culprit for wasted space.\n5. Move files to the cloud: OneDrive offers a seamless way to free up local storage.\n\nBy following these simple steps, you'll unlock more space and enhance your PC's overall performance in no time!",
+    "expected_behavior": "Should score high on the semantic judge; fingerprint layer may under-signal since numbered steps are inherently terse. Useful check on whether structured/step content still gets flagged appropriately, since format alone (short imperative lines) shouldn't suppress a real score."
+  },
+  {
+    "id": "ai-simulated-edited",
+    "category": "known_ai",
+    "subcategory": "simulated_human_edit",
+    "ground_truth": "ai (NOT a real human edit — see note)",
+    "source": "Written by Claude, this conversation, 2026-08-04. Same underlying content as ai-fresh-itpro-raw, deliberately revised: tells removed, contractions added, one specific first-person anecdote inserted, to simulate what an AI-drafted-then-human-edited paragraph looks like.",
+    "word_count": 96,
+    "text": "Network security matters more than it used to, and VLAN segmentation is one of the more practical ways to cut down your attack surface. I set this up on a client's retail network last year, splitting POS traffic from guest Wi-Fi took about a day, and it immediately made the quarterly PCI audit less painful. Segmentation limits how far an attacker can move if something gets compromised, it simplifies compliance reporting, and it gives you better visibility into what's actually talking to what. It's not glamorous work, but it's one of the higher-value changes you can make to a flat network.",
+    "expected_behavior": "This is the case that matters most for your actual use. It's still 100% AI-written (not real ground truth for 'human-edited'), but styled to simulate your target workflow. It should land clearly lower than ai-fresh-itpro-raw despite covering the same content — if it doesn't move much, your judge isn't picking up on the signal you actually care about."
+  },
+  {
+    "id": "edge-code-heavy",
+    "category": "edge_case",
+    "subcategory": "non_prose",
+    "ground_truth": "n/a — behavioral test, not an authorship claim",
+    "source": "Written by Claude, this conversation.",
+    "word_count": 28,
+    "text": "```powershell\nGet-ADUser -Filter * -Properties LastLogonDate | Where-Object {$_.LastLogonDate -lt (Get-Date).AddDays(-90)} | Select-Object Name, LastLogonDate | Export-Csv -Path C:\\reports\\stale_accounts.csv -NoTypeInformation\n```\nRun this after hours — it's a lightweight query but still worth avoiding peak login times on a busy DC.",
+    "expected_behavior": "The code block should be excluded from prose scoring entirely (detected_type: code), not scored as if it were AI-style prose. Only the one trailing sentence is real prose, and it's too short to score with any confidence on its own."
+  },
+  {
+    "id": "edge-boilerplate-cta",
+    "category": "edge_case",
+    "subcategory": "reused_boilerplate",
+    "ground_truth": "n/a — behavioral test",
+    "source": "Written by Claude, this conversation — deliberately generic, meant to represent a CTA you'd reuse verbatim across many articles.",
+    "word_count": 33,
+    "text": "If you found this guide helpful, check out our other IT tutorials for more practical tips on managing your infrastructure. Have questions? Drop a comment below or reach out directly, we're always happy to help.",
+    "expected_behavior": "Run this exact string as the closing paragraph of two or three different test articles. If your boilerplate-detection is wired up, it should get excluded/flagged as boilerplate every time rather than re-scored fresh per article. If it isn't wired up yet, this will show you that gap directly."
+  },
+  {
+    "id": "edge-short-fragment",
+    "category": "edge_case",
+    "subcategory": "insufficient_length",
+    "ground_truth": "n/a — behavioral test",
+    "source": "Written by Claude, this conversation.",
+    "word_count": 5,
+    "text": "### Quick Tips\nKeep your drivers updated.",
+    "expected_behavior": "Should return insufficient_text / low confidence, not a forced percentage in either direction."
+  },
+  {
+    "id": "edge-statistics-dense",
+    "category": "edge_case",
+    "subcategory": "low_stylistic_signal",
+    "ground_truth": "n/a — behavioral test",
+    "source": "Written by Claude, this conversation.",
+    "word_count": 47,
+    "text": "Q3 2026 uptime across the fleet: 99.982%. Mean time to resolution dropped from 47 minutes to 31 minutes quarter over quarter. Ticket volume: 1,204 (down 6% YoY). Patch compliance sits at 94.3% across 700+ endpoints, with the remaining 5.7% flagged for manual remediation by Friday.",
+    "expected_behavior": "Low stylistic signal either way — expect a low_confidence flag regardless of which bucket it lands in. If this scores high-confidence in either direction, the judge is probably reading number-density as a style cue, which it shouldn't."
+  },
+  {
+    "id": "edge-formal-jargon-dry",
+    "category": "edge_case",
+    "subcategory": "false_positive_probe",
+    "ground_truth": "n/a — behavioral test, deliberately NOT a real human sample",
+    "source": "Written by Claude, this conversation — dry technical documentation register, no hedging, no hype adjectives, written specifically to probe the exact false-positive risk your own site's docs already name (formal/technical writing tripping rhythm and vocabulary signals).",
+    "word_count": 95,
+    "text": "Configure the trust relationship by importing the root certificate into the local machine store, then verify the certificate chain resolves correctly using certutil -verify. If the chain fails at the intermediate CA, check that the intermediate certificate is present in the intermediate store rather than the personal store, this is the most common cause of trust failures in mixed on-prem/cloud AD environments. Once the chain validates, restart the certificate services and confirm the relying party can authenticate against the new trust anchor.",
+    "expected_behavior": "This is Claude-written, so it can't validate true human writing. Its only purpose is: does dry, jargon-dense, hedge-free technical prose alone push the score up? If yes, that's a real false-positive shape worth knowing on your own genre — not proof the tool is broken, since your docs already flag this as an expected weak spot."
+  }
+]

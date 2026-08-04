@@ -1,0 +1,17 @@
+{
+  "name": "slopdetector",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI slop fingerprint scanner - heuristic analyzer + Gemini semantic judge. Deployable to slopdetector.praveentechworld.com via Vercel.",
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  },
+  "scripts": {
+    "test": "node api/analyze.js",
+    "dev": "vercel dev"
+  }
+}
